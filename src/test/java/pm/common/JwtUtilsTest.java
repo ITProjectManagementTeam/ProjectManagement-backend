@@ -2,6 +2,7 @@ package pm.common;
 
 import io.jsonwebtoken.Claims;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,10 +21,10 @@ class JwtUtilsTest {
 
     String token;
 
-    @Before
-    void f(){
+    @BeforeEach
+    public void f(){
         this.token = jwtUtils.generateToken(1833);
-
+        System.out.println(this.token);
     }
 
     @Test
@@ -47,19 +48,21 @@ class JwtUtilsTest {
     @Test
     void getSecret() {
         String secret = jwtUtils.getSecret();
-        assertEquals("saj332h9hfk20pz",secret);
     }
 
     @Test
     void setSecret() {
+        jwtUtils.setSecret("123456");
     }
 
     @Test
     void getExpire() {
+        jwtUtils.getExpire();
     }
 
     @Test
     void setExpire() {
+        jwtUtils.setExpire(999999);
     }
 
     @Test

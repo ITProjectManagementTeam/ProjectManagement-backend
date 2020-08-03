@@ -20,7 +20,7 @@ mybatis:
 
 pm:
   jwt:
-    secret: "${jwt_secret}"
+    secret: pp8hiuab
       # token有效时长，7天，单位秒
     expire: 1296000
     header: authorization
