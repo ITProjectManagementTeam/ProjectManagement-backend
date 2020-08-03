@@ -24,7 +24,7 @@ jobs:
       - name: Push Docker
         run: |
           docker login --username=${{ secrets.USERNAME }} --password ${{ secrets.PASSWORD }} registry.cn-hangzhou.aliyuncs.com
-          docker build --build-arg jwt_secret --build-arg mysql_itpm_password . -t ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
+          docker build --build-arg DOCKER_jwt_secret --build-arg DOCKER_mysql_itpm_password . -t ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
           docker push ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
           docker tag $(docker images ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER -q) ${{ secrets.REGISTRY }}:latest
           docker push ${{ secrets.REGISTRY }}:latest
@@ -39,18 +39,22 @@ jobs:
     steps:
       - name: Deploy
         uses: appleboy/ssh-action@master
+        env:
+          mysql_itpm_password: $mysql_itpm_password
+          jwt_secret: $jwt_secret}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PWD }}
           port: ${{ secrets.PORT }}
-          run: |
+          envs: jwt_secret,mysql_itpm_password
+          script: |
             docker stop $(docker ps --filter ancestor=${{ secrets.REGISTRY }} -q)
             docker rm -f $(docker ps -a --filter ancestor=${{ secrets.REGISTRY }}:latest -q)
             docker rmi -f $(docker images  ${{ secrets.REGISTRY }}:latest -q)
             docker login --username=${{ secrets.USERNAME }} --password ${{ secrets.PASSWORD }} registry.cn-hangzhou.aliyuncs.com
             docker pull ${{ secrets.REGISTRY }}:latest
-            docker run -d -p 8001:8001 -e jwt_secret=$jwt_secret -e mysql_itpm_password=$mysql_itpm_password  ${{ secrets.REGISTRY }}:latest
+            docker run -d -p 8001:8001 --env-file <(env | grep DOCKER)  ${{ secrets.REGISTRY }}:latest
 
 
 
