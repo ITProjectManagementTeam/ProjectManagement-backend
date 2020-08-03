@@ -67,9 +67,15 @@ class JwtUtilsTest {
 
     @Test
     void getHeader() {
+        jwtUtils.getHeader();
     }
 
     @Test
     void setHeader() {
+        String header = jwtUtils.getHeader();
+        jwtUtils.setHeader("jwt");
+        String header1 = jwtUtils.getHeader();
+        jwtUtils.setHeader(header);
+        assertEquals("jwt",header1);
     }
 }
