@@ -24,7 +24,7 @@ jobs:
       - name: Push Docker
         run: |
           docker login --username=${{ secrets.USERNAME }} --password ${{ secrets.PASSWORD }} registry.cn-hangzhou.aliyuncs.com
-          docker build --build-arg jwt_secret --build-arg mysql_itpm_password . -t ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
+          docker build . -t ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
           docker push ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
           docker tag $(docker images ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER -q) ${{ secrets.REGISTRY }}:latest
           docker push ${{ secrets.REGISTRY }}:latest
@@ -50,7 +50,7 @@ jobs:
             docker rmi -f $(docker images  ${{ secrets.REGISTRY }}:latest -q)
             docker login --username=${{ secrets.USERNAME }} --password ${{ secrets.PASSWORD }} registry.cn-hangzhou.aliyuncs.com
             docker pull ${{ secrets.REGISTRY }}:latest
-            docker run -d -p 8001:8001 ${{ secrets.REGISTRY }}:latest
+            docker run -d -p 8001:8001 -e jwt_secret -e mysql_itpm_password ${{ secrets.REGISTRY }}:latest
 
 
 
