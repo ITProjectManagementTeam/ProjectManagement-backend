@@ -6,6 +6,8 @@ ARG jwt_secret=${jwt_secret}
 
 ENV CODE /code
 ENV WORK /code/work
+ENV mysql_itpm_password ${mysql_itpm_password}
+ENV jwt_secret ${jwt_secret}
 RUN mkdir -p $CODE \
     && mkdir -p $WORK
 
