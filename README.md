@@ -11,7 +11,7 @@ $ java -jar java -jar pm-backend-1.0-SNAPSHOT.jar
 
 
 ## 2. 云服务器
-已使用github action实现CI/CD，部署在云服务器上: www.hixinj.com
+已使用github action实现CI/CD，部署在云服务器上: 47.97.193.41
 
 
 
@@ -44,3 +44,9 @@ POST http://localhost:8001/api/register
 }
 ```
 
+## 测试
+在CI/CD流水线上，Junit单元测试，jacoco统计覆盖率，然后将测试结果上传到[codecov](https://www.codecov.io/)
+
+## 代码覆盖率
+
+![代码覆盖率](assets/cov.png)

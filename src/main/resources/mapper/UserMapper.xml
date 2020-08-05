@@ -27,7 +27,7 @@
     </update>
 
     <delete id="delete" parameterType="pm.entities.User">
-        delete from user where user_id = #{userId};
+        delete from user where username = #{username};
     </delete>
 
     <select id="queryByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
